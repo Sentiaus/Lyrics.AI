@@ -1,0 +1,25 @@
+{
+  "name": "lyrics.ai",
+  "version": "1.0.0",
+  "description": "Website meant to analyze and retrieve lyric occurences within songs",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "author": "Victor Fawole",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.3",
+    "nodemon": "^3.1.4",
+    "openai": "^4.56.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.10"
+  },
+  "type": "module"
+}
