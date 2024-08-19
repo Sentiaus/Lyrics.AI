@@ -3,6 +3,7 @@ import Song from "../models/SongModel.js"
 
 /******* Get All Songs *******/
 const getSongs = async(req,res)=>{
+    // Get songs from database
     try{
         const songs = await Song.find()
         return res.status(200).json({songs})
