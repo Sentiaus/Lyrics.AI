@@ -21,7 +21,7 @@ const SongSchema = new mongoose.Schema({
     geniusLink: {
         type: String
     }
-})
+}, {timestamps: true})
 
 const Song = mongoose.model('Song', SongSchema)
 
