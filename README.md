@@ -26,3 +26,8 @@ GPT-4: The word "Hello" occurs 9 times in the song. All these hello's and yet no
 ```
 
 
+## To run:
+```
+npm i
+npm run server
+```
