@@ -1,5 +1,7 @@
 import express from "express"
 import Song from "../models/SongModel.js"
+import axios from "axios"
+import * as cheerio from "cheerio"
 
 /******* Get All Songs *******/
 const getSongs = async(req,res)=>{
@@ -38,4 +40,34 @@ const addSong = async(req, res) => {
     
 }
 
-export { getSongs, addSong }
+/****** Get one Song ********/
+const getUserQuery = async(req,res) => {
+    // Get lyric, title, artist, and geniusLink from body, aka gpt request
+    const {lyric, title, artist, geniusLink} = req.body
+
+    if(!(lyric && title && artist && geniusLink)){
+        return res.status(500).json({error: "All parts of the query are needed"})
+    }
+
+    const song = await Song.findOne({title, artist})
+    // Get song
+    if(!song){
+        // const newSong = await scrapeSong(title, artist, geniusLink)
+        // Get Genius Link, Scrape Song, add Song to DB. Get song.
+    }
+    //Use Fuse.js to search lyrics
+
+}
+
+/****** Scrape Song From Genius ******/
+const scrapeSong = async(req, res) => {
+    // console.log("heard")
+    // const {geniusLink} = req.body
+    // const url = geniusLink
+    // const data = await axios.get(url)
+    // const $ = cheerio.load(data.data)
+    
+    return res.status(500).json({Error: "Not finished"})
+}
+
+export { getSongs, addSong, scrapeSong }
