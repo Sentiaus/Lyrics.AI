@@ -2,3 +2,7 @@
 Updated GPT Model so that lyric is also tracked, and the model is forced to use a function. Need to make sure I actually add the request and return it to other functions.
 
 Working on adding scraping functionality to the songController, but lowkey confused on if it should be in the controller or a utility function.
+
+## 8/25/24
+Figured out songController functionality by using genius-lyrics library for a service instead.
+Can now properly add a song to database as well as lyrics.
