@@ -1,7 +1,5 @@
 import express from "express"
 import Song from "../models/SongModel.js"
-import axios from "axios"
-import * as cheerio from "cheerio"
 import { scrapeSong } from "../services/geniusService.js"
 
 /******* Get All Songs *******/
@@ -18,7 +16,7 @@ const getSongs = async(req,res)=>{
 /******* Add one Song *******/
 const addSong = async(req, res) => {
     // Get title and artist from body
-    const {title, artist, geniusLink} = req.body
+    const {lyric, title, artist, geniusLink} = req.body
 
     // Validate input
     if(!(title && artist && geniusLink)){
