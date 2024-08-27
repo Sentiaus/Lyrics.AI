@@ -31,49 +31,22 @@ const addSong = async(req, res) => {
 
     // Add song to database, get lyrics from geniusService
     try{
-        const lyrics = await scrapeSong(geniusLink)
+        const lyrics = await scrapeSong(title, artist, geniusLink)
         if(lyrics === "error"){
             return res.status(500).json({error: "scrape song failed"})
         }
         await Song.create({title, artist, lyrics})
-        return res.status(200).json({success: "Song added to database", title})
+        return res.status(200).json({success: "Song added to database", title, artist})
     }catch(e){
         return res.status(500).json({error: e})
     }
     
 }
 
-/****** Get one Song ********/
-const getUserQuery = async(req,res) => {
-    // Get lyric, title, artist, and geniusLink from body, aka gpt request
-    const {lyric, title, artist, geniusLink} = req.body
-
-    if(!(lyric && title && artist && geniusLink)){
-        return res.status(500).json({error: "All parts of the query are needed"})
-    }
-
-    const song = await Song.findOne({title, artist})
-    // Get song
-    if(!song){
-        // const newSong = await scrapeSong(title, artist, geniusLink)
-        // Get Genius Link, Scrape Song, add Song to DB. Get song.
-    }
-    //Use Fuse.js to search lyrics
+const searchSong = async(req, res) => {
 
 }
 
-/****** Scrape Song From Genius ******/
-// const scrapeSong = async(req, res) => {
 
-//     if(!(lyric && title && artist && geniusLink)){
-//         return res.status(500).json({error: "All parts of the query are needed"})
-//     }
-//     try{
 
-//     }catch(e){
-
-//     }
-//     return res.status(500).json({Error: "Not finished"})
-// }
-
-export { getSongs, addSong, scrapeSong }
+export { getSongs, addSong}
