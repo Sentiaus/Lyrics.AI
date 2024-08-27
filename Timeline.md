@@ -6,3 +6,6 @@ Working on adding scraping functionality to the songController, but lowkey confu
 ## 8/25/24
 Figured out songController functionality by using genius-lyrics library for a service instead.
 Can now properly add a song to database as well as lyrics.
+
+## 8/26/24
+Added full functionality to the geniusService, addSong, and started on fuseService. Considering restructuring geniusService.
