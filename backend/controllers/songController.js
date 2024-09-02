@@ -1,6 +1,8 @@
 import express from "express"
 import Song from "../models/SongModel.js"
 import { scrapeSong } from "../services/geniusService.js"
+import { searchSongs } from "../services/fuseService.js"
+import { snarkyOutput } from "../services/gptService.js"
 
 /******* Get All Songs *******/
 const getSongs = async(req,res)=>{
@@ -43,10 +45,23 @@ const addSong = async(req, res) => {
     
 }
 
-const searchSong = async(req, res) => {
+const searchSong = async(req, res, next) => {
+    const {lyric, title, artist} = req.body
 
+    // Check if song already exists within db
+    try{
+        const song = await Song.findOne({title, artist})
+        const occurence = searchSongs(lyric, song)
+        console.log("Completed")
+        console.log(occurence)
+        const response = await snarkyOutput(lyric, occurence, song)
+        return res.status(200).json({success: "Song found", response})
+    }catch(e){
+        return res.status(500).json({error:e})
+    }
 }
 
 
 
-export { getSongs, addSong}
+
+export { getSongs, addSong, searchSong}
