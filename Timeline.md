@@ -9,3 +9,6 @@ Can now properly add a song to database as well as lyrics.
 
 ## 8/26/24
 Added full functionality to the geniusService, addSong, and started on fuseService. Considering restructuring geniusService.
+
+## 9/5/24
+Added frontend form (I suck at this lol)
