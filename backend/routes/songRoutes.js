@@ -1,5 +1,5 @@
 import express from "express"
-import { addSong, getSongs, searchSong } from "../controllers/songController.js"
+import { getSongs, handleUserRequest } from "../controllers/songController.js"
 import { readInput } from "../services/gptService.js"
 
 const router = express.Router()
@@ -7,9 +7,9 @@ const router = express.Router()
 /******* Get All Songs *******/
 router.get('/', getSongs)
 
-/******* Add one Song *******/
-router.post('/', readInput, addSong)
+/******* Process User Query *******/
+router.post('/', readInput, handleUserRequest)
 
-router.get('/search', searchSong)
+// router.get('/search', searchSong)
 
 export { router as songRoutes }
