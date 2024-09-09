@@ -61,7 +61,42 @@ const searchSong = async(req, res, next) => {
     }
 }
 
+const handleUserRequest = async(req,res,next) => {
+    const {lyric, title, artist, geniusLink} = req.body
+    // Validate input
+    if(!(title && artist && geniusLink)){
+        return res.status(400).json({error: "Fill out all parts of the form"})
+    }
+    
+    // Check if song already exists within db
+    let song = await Song.findOne({title, artist})
+    if(!song){
+        // Add song if it doesn't exist
+        // Add song to database, get lyrics from geniusService
+        try{
+            const lyrics = await scrapeSong(title, artist, geniusLink)
+            if(lyrics === "error"){
+                return res.status(500).json({error: "scrape song failed"})
+            }
+            song = await Song.create({title, artist, lyrics})
+            console.log("Song added to database")
+        }catch(e){
+            return res.status(500).json({error: e})
+        }
+    }else{
+        console.log("Song exists")
+    }
+    // Get 
+    try{
+        const occurence = searchSongs(lyric, song)
+        console.log("Completed")
+        console.log(occurence)
+        const response = await snarkyOutput(lyric, occurence, song)
+        return res.status(200).json({success: "Song found", response})
+    }catch(e){
+        return res.status(500).json({error:e})
+    }
+}
 
 
-
-export { getSongs, addSong, searchSong}
+export { getSongs, handleUserRequest}
