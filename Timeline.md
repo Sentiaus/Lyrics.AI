@@ -12,3 +12,7 @@ Added full functionality to the geniusService, addSong, and started on fuseServi
 
 ## 9/5/24
 Added frontend form (I suck at this lol)
+
+## 9/9/24
+Went back to work on backend, discovered bug, realized it's really hard to test individual files without changing parameters, gonna add testing software (just like my teachers taught me lmao).
+Went with Mocha, Chai, Sinon.
