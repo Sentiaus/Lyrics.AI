@@ -92,29 +92,37 @@ const readInput = async (req,res, next) => {
     if(!content){
         return res.status(400).json({error: "Please input a query"})
     }
-
-    // Append users message to the conversation
-    messagesInput.push({role: "user", content})
-
-    // Get response from GPT4o-mini model
-    const response = await openAIClient.chat.completions.create({
-        model: "gpt-4o-mini-2024-07-18",
-        messages: messagesInput,
-        tool_choice: "required", // Must always return function
-        tools: tools,
-    })
-
-    // Get function response
-    const jsonOutput = response.choices[0].message.tool_calls?.[0].function.arguments
-
-    // Push tool output to messages
-    if (jsonOutput){
-        messagesInput.push({role:"tools", content: JSON.stringify(jsonOutput)})
+    try{
+        // Append users message to the conversation
+        messagesInput.push({role: "user", content})
+        console.log("BP1")
+        // Get response from GPT4o-mini model
+        // Bug occurs here
+        let response = await openAIClient.chat.completions.create({
+            model: "gpt-4o-mini-2024-07-18",
+            messages: messagesInput,
+            tool_choice: "required", // Must always return function
+            tools: tools,
+        })
+        
+        // Get function response
+        const assistantMessage = response.choices[0].message
+        const jsonOutput = assistantMessage.tool_calls?.[0].function.arguments
+        
+        // Push tool output to messages
+        if (jsonOutput){
+            messagesInput.push({role:"tool",tool_call_id: assistant ,content: JSON.stringify(jsonOutput)})
+        }
+        
+        // Modify and return request with parsed output in the shape of {lyric, name, artist, geniusLink}
+        req.body = JSON.parse(jsonOutput)
+        
+        next()
+    }catch(e){
+        console.log(e)
+        return res.status(500).json({error:e})
     }
-
-    // Modify and return request with parsed output in the shape of {lyric, name, artist, geniusLink}
-    req.body = JSON.parse(jsonOutput)
-    next()
+    
 }
 
 const snarkyOutput = async (lyric, occurences, song) => {
@@ -123,7 +131,8 @@ const snarkyOutput = async (lyric, occurences, song) => {
     })
     // Get content from request
     const content = `${occurences} occurences of the lyric ${lyric} in ${song.artist}'s song ${song.title}`
-
+    
+    try{
     // Append users message to the converstaion
     messagesOutput.push({role: "user", content})
     const response = await openAIClient.chat.completions.create({
@@ -135,9 +144,16 @@ const snarkyOutput = async (lyric, occurences, song) => {
     const output = response.choices[0].message.content
     console.log(output)
     return output
+    }catch(e){
+        console.log(e)
+        return "Sorry there seems to have been an error!"
+    }
 }
 // await snarkyOutput("Hello", 0, "Adele", "Hello")
 
+await readInput({
+        "content":"How many times does Adele say Hello in Hello?"
+    })
 
 export { readInput, snarkyOutput }
 
